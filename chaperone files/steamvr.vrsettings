@@ -1,0 +1,52 @@
+{
+   "DesktopUI" : {
+      "pairing" : "1133,527,801,602,0"
+   },
+   "GpuSpeed" : {
+      "gpuSpeed0" : 751,
+      "gpuSpeed1" : 759,
+      "gpuSpeed2" : 757,
+      "gpuSpeed3" : 757,
+      "gpuSpeed4" : 759,
+      "gpuSpeed5" : 758,
+      "gpuSpeed6" : 751,
+      "gpuSpeed7" : 758,
+      "gpuSpeed8" : 751,
+      "gpuSpeed9" : 757,
+      "gpuSpeedCount" : 10,
+      "gpuSpeedDriver" : "441.28",
+      "gpuSpeedHorsepower" : 756,
+      "gpuSpeedRenderTargetScale" : 1.1599999666213989,
+      "gpuSpeedVendor" : "NVIDIA GeForce RTX 2070",
+      "gpuSpeedVersion" : 2
+   },
+   "LastKnown" : {
+      "HMDManufacturer" : "HTC",
+      "HMDModel" : "VIVE_Pro MV"
+   },
+   "camera" : {
+      "cameraBoundsColorGammaA" : 255,
+      "cameraBoundsColorGammaG" : 127,
+      "cameraRoomViewMode" : 1,
+      "enableCamera" : true
+   },
+   "collisionBounds" : {
+      "CollisionBoundsColorGammaA" : 255,
+      "CollisionBoundsColorGammaG" : 200,
+      "CollisionBoundsFadeDistance" : 0,
+      "CollisionBoundsStyle" : 4
+   },
+   "driver_lighthouse" : {
+      "PowerManagedBaseStations2" : "LHB-9E26FB84:BS2:1,LHB-00869C34:BS2:1,LHB-2ECF0BBF:BS2:1,LHB-1CCF85E5:BS2:1"
+   },
+   "power" : {
+      "pauseCompositorOnStandby" : false,
+      "turnOffControllersTimeout" : 0
+   },
+   "steamvr" : {
+      "allowDisplayLockedMode" : true,
+      "installID" : "12086590187158624322",
+      "showMirrorView" : true,
+      "supersampleScale" : 1.1599999666213989
+   }
+}
