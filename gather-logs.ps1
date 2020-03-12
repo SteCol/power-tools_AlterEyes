@@ -1,14 +1,35 @@
 # Gathering logs from %AppData% from all the pc's
 
+
+
+# local script location
+$ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
+Write-Host("local dir is " + $ScriptDir)
+
+$datetime = Get-Date -Format "dd-MM-yyyy_hh-mm"
+Write-Host("time: " + $datetime)
+
 # Set the destination to copy to
-$dest = Read-Host('Destination')
+# $dest = Read-Host('Destination')
+$dest = $ScriptDir + "\logs_" + $datetime
+Write-Host("Making dir at " + $dest)
+New-Item "$dest" -ItemType Directory
+
+# Make a notes file
+Write-Host("Making README at " + "$dest\README.txt")
+New-Item "$dest\README.txt"
+
+$note = Read-Host('Note')
+Write-Host("Writing $note to README at " + "$dest\README.txt")
+Set-Content "$dest\README.txt" $note
+
+# Pause
 
 # Set all the string parameters for name giving and such
 $sources = "W:", "X:", "Y:", "Z:", "C:\Users\dojo_admin"
 $index = "1", "2", "3", "4", "0"
 $title = "Lobby", "PE", "CoC", "Fiesta"
 $games = "AlterEyes\Dojo_Lobby\Player.log", "AlterEyes\PointyEnds\output_log.txt", "FlatHillGames\ClashOfChefsVR\output_log.txt", "MakeReal\Loco Dojo\output_log.txt"
-$datetime = Get-Date -Format "dd-MM-yyyy_hh-mm"
 
 For ($j = 0; $j -le 3; $j++) {
 
@@ -35,4 +56,4 @@ For ($j = 0; $j -le 3; $j++) {
     Write-Host("Deleted original dir " + $newDir )
 }
 
-Pause
+# Pause
