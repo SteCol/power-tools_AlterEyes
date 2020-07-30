@@ -26,34 +26,57 @@ Set-Content "$dest\README.txt" $note
 # Pause
 
 # Set all the string parameters for name giving and such
-$sources = "W:", "X:", "Y:", "Z:", "C:\Users\dojo_admin"
+$sources = "W:", "X:", "Y:", "Z:", "V:"
 $index = "1", "2", "3", "4", "0"
-$title = "Lobby", "PE", "CoC", "Fiesta"
-$games = "AlterEyes\Dojo_Lobby\Player.log", "AlterEyes\PointyEnds\output_log.txt", "FlatHillGames\ClashOfChefsVR\output_log.txt", "MakeReal\Loco Dojo\output_log.txt"
+$commonTitle = "Lobby", "PE", "CoC", "Fiesta"
+$NASTarget = "U:\Logs\"
 
-For ($j = 0; $j -le 3; $j++) {
+
+$appdataTitle = "AppData_Lobby", "AppData_PE", "AppData_CoC", "AppData_Fiesta"
+$appdataGames = "AlterEyes\Dojo_Lobby\Player.log", "AlterEyes\PointyEnds\output_log.txt", "FlatHillGames\ClashOfChefsVR\output_log.txt", "MakeReal\Loco Dojo\output_log.txt"
+
+$LogTitles = "Log_Lobby", "Log_PE", "Log_CoC", "Log_Fiesta"
+$logName = "dojogame-001", "dojogame-002", "dojogame-003", "dojogame-004", "dojoserv-001"
+$logGames = "Lobby.log", "PointyEnds.log", "ClashOfChefsVR.log", "Loco Dojo.log"
+
+
+For ($j = 0; $j -lt $appdataGames.Length; $j++) {
 
     # Make a new directory to store the file in per game
-    $newDir = $dest + "\" + $title[$j] + "_" + $datetime
+    $newDir = $dest + "\" + $commonTitle[$j] + "_" + $datetime
     New-Item "$newDir" -ItemType Directory
     Write-Host("Made New Directory " + $newDir)
 
     # Copy the files per pc to the correct game folder
-    For ($i = 0; $i -le 4; $i++) {
-        $fullpath = $sources[$i] + "\AppData\LocalLow\" + $games[$j]
-        $fulldest = $newDir + "\" + $title[$j] + "_p" + $index[$i] + "_" + $datetime + ".txt"
+    For ($i = 0; $i -lt $sources.Length; $i++) {
+        $fullpath = $sources[$i] + "\AppData\LocalLow\" + $appdataGames[$j]
+        $fulldest = $newDir + "\" + $appdataTitle[$j] + "_p" + $index[$i] + "_" + $datetime + ".txt"
+        Write-Host("Copying " + $fullpath + " to " + $fulldest)
+        copy $fullpath $fulldest
+
+        $fullpath = "{0}\Logs\{1}_{2}" -f $sources[$i], $logName[$i], $logGames[$j]  
+        $fulldest = $newDir + "\" + $LogTitles[$j] + "_p" + $index[$i] + "_" + $datetime + ".txt"
         Write-Host("Copying " + $fullpath + " to " + $fulldest)
         copy $fullpath $fulldest
     }
 
-    # Comress the folder to make it faster to send to developers
-    $zipPath = "$newDir" + ".zip"
-    Compress-Archive -Path $newDir -DestinationPath $zipPath
-    Write-Host("Compressed " + $newDir + " to " + $zipPath)
+    $archive = $true
 
-    # Delete the non-comressed folder
-    Remove-Item -LiteralPath $newDir -Force -Recurse
-    Write-Host("Deleted original dir " + $newDir )
+    Write-Host("archiving...")
+
+    if ($archive) {
+        # Comress the folder to make it faster to send to developers
+        $zipPath = "$newDir" + ".zip"
+        Compress-Archive -Path $newDir -DestinationPath $zipPath
+        Write-Host("Compressed " + $newDir + " to " + $zipPath)
+
+        # Delete the non-comressed folder
+        Remove-Item -LiteralPath $newDir -Force -Recurse
+        Write-Host("Deleted original dir " + $newDir )
+    }else{
+        Write-Host("archiving is false, not archiving")
+    }
 }
 
-# Pause
+Write-Host("Copying files to NAS ({0} --> {1})" -f $dest,$NASTarget)
+Copy-Item -Path $dest -Destination $NASTarget -recurse
