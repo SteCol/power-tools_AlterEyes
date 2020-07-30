@@ -16,17 +16,30 @@ Write-Host("Making dir at " + $dest)
 New-Item "$dest" -ItemType Directory
 
 # Make a notes file
-Write-Host("Making README at " + "$dest\README.txt")
-New-Item "$dest\README.txt"
+$readmeFile = $dest + "\README.txt"
 
+Write-Host("Making README at $readmeFile")
+New-Item $readmeFile
+$location = Read-Host('Location')
 $note = Read-Host('Note')
-Write-Host("Writing $note to README at " + "$dest\README.txt")
-Set-Content "$dest\README.txt" $note
+
+Write-Host("Writing $note to README at  $readmeFile")
+# Set-Content "$dest\README.txt" $note
+
+Add-Content $readmeFile "# Logs"
+Add-Content $readmeFile ""
+Add-Content $readmeFile "## Info"
+Add-Content $readmeFile "* Location: $location"
+Add-Content $readmeFile "* Session: $datetime"
+Add-Content $readmeFile ""
+Add-Content $readmeFile "## Note"
+Add-Content $readmeFile "* $note"
 
 # Pause
 
 # Set all the string parameters for name giving and such
 $sources = "W:", "X:", "Y:", "Z:", "V:"
+$sourcesB = "Y:", "X:", "W:", "V:", "Z:"
 $index = "1", "2", "3", "4", "0"
 $commonTitle = "Lobby", "PE", "CoC", "Fiesta"
 $NASTarget = "U:\Logs\"
@@ -48,14 +61,14 @@ For ($j = 0; $j -lt $appdataGames.Length; $j++) {
     Write-Host("Made New Directory " + $newDir)
 
     # Copy the files per pc to the correct game folder
-    For ($i = 0; $i -lt $sources.Length; $i++) {
-        $fullpath = $sources[$i] + "\AppData\LocalLow\" + $appdataGames[$j]
-        $fulldest = $newDir + "\" + $appdataTitle[$j] + "_p" + $index[$i] + "_" + $datetime + ".txt"
+    For ($i = 0; $i -lt $sourcesB.Length; $i++) {
+        $fullpath = $sourcesB[$i] + "\AppData\LocalLow\" + $appdataGames[$j]
+        $fulldest = $newDir + "\" + $appdataTitle[$j] + "_p" + $index[$i] + "_" + $datetime + ".log"
         Write-Host("Copying " + $fullpath + " to " + $fulldest)
         copy $fullpath $fulldest
 
-        $fullpath = "{0}\Logs\{1}_{2}" -f $sources[$i], $logName[$i], $logGames[$j]  
-        $fulldest = $newDir + "\" + $LogTitles[$j] + "_p" + $index[$i] + "_" + $datetime + ".txt"
+        $fullpath = "{0}\Logs\{1}_{2}" -f $sourcesB[$i], $logName[$i], $logGames[$j]  
+        $fulldest = $newDir + "\" + $LogTitles[$j] + "_p" + $index[$i] + "_" + $datetime + ".log"
         Write-Host("Copying " + $fullpath + " to " + $fulldest)
         copy $fullpath $fulldest
     }
@@ -80,3 +93,5 @@ For ($j = 0; $j -lt $appdataGames.Length; $j++) {
 
 Write-Host("Copying files to NAS ({0} --> {1})" -f $dest,$NASTarget)
 Copy-Item -Path $dest -Destination $NASTarget -recurse
+Remove-Item -LiteralPath $dest -Force -Recurse
+
