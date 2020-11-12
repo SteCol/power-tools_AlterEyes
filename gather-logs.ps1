@@ -6,12 +6,13 @@
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 Write-Host("local dir is " + $ScriptDir)
 
-$datetime = Get-Date -Format "dd-MM-yyyy_hh-mm"
+$datetime = Get-Date -Format "yyyyMMdd_hh-mm"
 Write-Host("time: " + $datetime)
 
 # Set the destination to copy to
 # $dest = Read-Host('Destination')
-$dest = $ScriptDir + "\logs_" + $datetime
+    
+    $dest = $ScriptDir + "\logs_"+ $location + "_" + $datetime
 Write-Host("Making dir at " + $dest)
 New-Item "$dest" -ItemType Directory
 
@@ -56,7 +57,8 @@ $logGames = "Lobby.log", "PointyEnds.log", "ClashOfChefsVR.log", "Loco Dojo.log"
 For ($j = 0; $j -lt $appdataGames.Length; $j++) {
 
     # Make a new directory to store the file in per game
-    $newDir = $dest + "\" + $commonTitle[$j] + "_" + $datetime
+    $newDir = $dest + "\" + $commonTitle[$j]  + "_" + $datetime
+    # + "_" + $location
     New-Item "$newDir" -ItemType Directory
     Write-Host("Made New Directory " + $newDir)
 
